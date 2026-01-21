@@ -457,17 +457,37 @@ void Vector<T>::quickSort(Rank lo, Rank hi) {
     quickSort(mi + 1, hi);
 }
 
+
+// template<typename T>
+// void Vector<T>::merge(Rank lo, Rank mi,Rank hi) {
+//     T* A=_elem+lo;//A[0,hi-lo]=_elem[lo,hi)
+//     int lb=mi-lo;T*B=new T[lb];//B[0,lb)=_elem[lo,mi)
+//     for (Rank i=0;i<lb;B[i]=A[i++]) {}//把A的前lb给B
+//     int lc=hi-mi;T* C=_elem+mi;//C[0,lc)=_elem[mi,hi)
+//     for (Rank i=0,j=0,k=0;(j<lb)||(k<lc);) {//B,C没放完
+//         if ((j<lb)&&((lc<=k)||(B[j]<=C[k])))  A[i++]=B[j++];//C[k]无或不小
+//         if ((k<lc)&&((lb<=j)||(C[k]<B[j])))   A[i++]=C[k++];//B[k]无或更大
+//     }
+//     delete[] B;//释放
+// }
+
 template<typename T>
-void Vector<T>::merge(Rank lo, Rank mi,Rank hi) {
-    T* A=_elem+lo;
-    int lb=mi-lo;T*B=new T[lb];
-    for (Rank i=0;i<lb;B[i]=A[i++]) {}
-    int lc=hi-mi;T* C=_elem+mi;
-    for (Rank i=0,j=0,k=0;(j<lb)||(k<lc);) {
-        if ((j<lb)&&((lc<=k)||(B[j]<=C[k])))  A[i++]=B[j++];
-        if ((k<lc)&&((lb<=j)||(C[j]<B[k])))   A[i++]=C[k++];
+void Vector<T>::merge(Rank lo, Rank mi,Rank hi) {//B放完不用再比,直接把C放进去就好(不用动)
+    T* A=_elem+lo;//A[0,hi-lo]=_elem[lo,hi)
+    int lb=mi-lo;T*B=new T[lb];//B[0,lb)=_elem[lo,mi)
+    for (Rank i=0;i<lb;i++) {B[i]=A[i];}//把A的前lb给B
+    int lc=hi-mi;T* C=_elem+mi;//C[0,lc)=_elem[mi,hi)
+    for (Rank i=0,j=0,k=0;j<lb;) {//B没放完
+        if ((k<lc)&&(C[k]<B[j]))   A[i++]=C[k++];//B[k]无或更大
+        else  A[i++]=B[j++];                    //C[k]无或不小
     }
-    delete[] B;
+    // Rank i=0,j=0,k=0;
+    // while (j<lb && k<lc) {
+    //     if (C[k]<B[j]) A[i++]=C[k++];
+    //     else A[i++]=B[j++];
+    // }
+    // while (j<lb)    A[i++]=B[j++];
+    delete[] B;//释放
 }
 
 template<typename T>
@@ -632,4 +652,5 @@ int main(){
     }
     cout << endl;
     return 0;
+
 }
