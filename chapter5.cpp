@@ -512,6 +512,7 @@ public:
     void reset() { count = 0; }
 };
 
+
 // 测试基本功能
 void testBasic() {
     cout << "========== 测试基本功能 ==========" << endl;
@@ -947,4 +948,5 @@ int main() {
     }
 
     return 0;
+
 }
